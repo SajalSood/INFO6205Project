@@ -22,7 +22,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
     //private int count = 1;
     private int index;
 //    private int thresh = 50;
-    private int threshY = 500;
 
 
     public void paint(Graphics g) {
