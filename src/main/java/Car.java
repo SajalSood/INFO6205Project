@@ -12,11 +12,11 @@ public class Car implements Constants {
     private String laneNumber;
     private boolean rotate;
     private int stopDistance;
-    final String alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    final String alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final Random r = new Random();
 
     public Car(int vehSpeed, int vehLocationX, int vehLocationY, int vehHeight, int vehWidth, String laneNumber, boolean rotate, int stopDistance){
-        this.id =  myUID();
+        this.id =  myUID(laneNumber);
         this.vehSpeed = vehSpeed;
         this.vehLocationX = vehLocationX;
         this.vehLocationY = vehLocationY;
@@ -27,10 +27,20 @@ public class Car implements Constants {
         this.stopDistance =  stopDistance;
     }
 
-    public String myUID() {
+    public String myUID(String laneNumber) {
         int i = 4; String uid = "";
+
+        if(laneNumber.equals("First")){
+            uid += "1-";
+        }
+        else if(laneNumber.equals("Second")){
+            uid += "2-";
+        }
+        else {
+            uid += "3-";
+        }
         while (i-- > 0) {
-            uid += alpha.charAt(r.nextInt(26));
+            uid += alpha.charAt(r.nextInt(36));
         }
         return uid;
     }

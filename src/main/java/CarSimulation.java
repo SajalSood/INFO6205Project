@@ -19,7 +19,6 @@ public class CarSimulation extends Observable implements Runnable  {
             thread = new Thread(this); // Create a worker thread
         };
         thread.start();
-        return;
     }
 
     public void pauseSim() {
