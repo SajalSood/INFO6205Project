@@ -1,5 +1,9 @@
+import java.util.Random;
+
 public class Car implements Constants {
 
+    Random r = new Random();
+    private int id;
     private int vehSpeed;
     private int vehLocationX;
     private int vehLocationY;
@@ -9,8 +13,8 @@ public class Car implements Constants {
     private boolean rotate;
     private int stopDistance;
 
-
     public Car(int vehSpeed, int vehLocationX, int vehLocationY, int vehHeight, int vehWidth, String laneNumber, boolean rotate, int stopDistance){
+        this.id = r.nextInt(1000);
         this.vehSpeed = vehSpeed;
         this.vehLocationX = vehLocationX;
         this.vehLocationY = vehLocationY;
@@ -102,5 +106,9 @@ public class Car implements Constants {
 
     public void setRotate(boolean rotate) {
         this.rotate = rotate;
+    }
+
+    public int getId(){
+        return id;
     }
 }

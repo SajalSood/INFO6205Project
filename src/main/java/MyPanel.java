@@ -89,6 +89,8 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 vehicle.getVehWidth(), vehicle.getVehHeight());
         g2d.setColor(color);
         g2d.fill(rect);
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(Integer.toString(vehicle.getId()), (int)rect.getX() + 10, (int)rect.getY() + 15);
     }
 
 
