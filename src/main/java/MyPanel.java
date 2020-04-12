@@ -21,7 +21,9 @@ public class MyPanel extends JPanel implements Constants, Observer {
     private CarSimulation sim = null;
     //private int count = 1;
     private int index;
-    private int thresh = 50;
+//    private int thresh = 50;
+    private int threshY = 500;
+
 
     public void paint(Graphics g) {
         g2d = (Graphics2D) g;
@@ -76,6 +78,9 @@ public class MyPanel extends JPanel implements Constants, Observer {
         g2d.drawString("Priority Queue", 50, 400);
 
         createVehiclesByVehicleInstances();
+
+        updatePriorityQueue();
+
     }
 
     private void createVehiclesByVehicleInstances(){
@@ -118,7 +123,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
             }
 
             updateLocations();
-            updatePriorityQueue();
             repaint();
         }
     }
@@ -128,10 +132,17 @@ public class MyPanel extends JPanel implements Constants, Observer {
         Object[] arr = pQueue.toArray();
 
         if(arr.length > 0) {
+            int threshX = 50;
+            int threshY = 500;
+
             for (int i = 0; i < arr.length; i++) {
-                thresh = thresh + 20;
+                if(threshX > 1000){
+                    threshX = 50;
+                    threshY = threshY + 30;
+                }
                 System.out.println("Ele: " + arr[i].toString());
-                g2d.drawString(arr[i].toString(), thresh, 500);
+                g2d.drawString(arr[i].toString(), threshX, threshY);
+                threshX = threshX + 60;
             }
         }
     }
