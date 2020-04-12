@@ -44,5 +44,5 @@ public interface Constants {
     ArrayList<Car> lane1 = new ArrayList<Car>();
     ArrayList<Car> lane2 = new ArrayList<Car>();
     ArrayList<Car> lane3 = new ArrayList<Car>();
-    PriorityQueue<Car> pQueue = new PriorityQueue<Car>();
+    PriorityQueue<Car> pQueue = new PriorityQueue<Car>(1000, new CarComparator());
 }

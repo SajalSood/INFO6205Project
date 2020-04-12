@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.util.Random;
 
 public class Car implements Constants {
@@ -118,4 +119,10 @@ public class Car implements Constants {
     public String getId(){
         return id;
     }
+
+    @Override
+    public String toString() {
+        return id;
+    }
 }
+
