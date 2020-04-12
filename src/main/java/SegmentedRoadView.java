@@ -27,18 +27,17 @@ public class SegmentedRoadView implements Constants, ActionListener {
         frame.setBackground(Color.GREEN);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.add(getSouthPanel(), BorderLayout.SOUTH);
+        frame.add(getNorthPanel(), BorderLayout.NORTH);
         panel = new MyPanel();
         frame.add(panel, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }
 
-    private JPanel getSouthPanel(){
+    private JPanel getNorthPanel(){
         btnStart = new JButton("Start");
         btnStart.setActionCommand("Start");
         btnStart.addActionListener(this);
-
         JPanel pan = new JPanel();
         pan.add(btnStart);
         return pan;
