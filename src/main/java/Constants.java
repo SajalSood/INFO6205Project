@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public interface Constants {
 
@@ -35,12 +36,13 @@ public interface Constants {
     int roadHeight = 150;
     int turningRightDistanceLane1 = 1330;
     int turningRightDistanceLane2 = 1242;
-    int lane1StopDistance = 80;
-    int lane2StopDistance = 80;
-    int lane3StopDistance = 100;
-
+    int laneStopDistance = 80;
+//    int lane1StopDistance = 80;
+//    int lane2StopDistance = 80;
+//    int lane3StopDistance = 100;
 
     ArrayList<Car> lane1 = new ArrayList<Car>();
     ArrayList<Car> lane2 = new ArrayList<Car>();
     ArrayList<Car> lane3 = new ArrayList<Car>();
+    PriorityQueue<Car> pQueue = new PriorityQueue<Car>();
 }

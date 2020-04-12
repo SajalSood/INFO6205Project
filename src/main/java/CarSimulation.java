@@ -8,18 +8,18 @@ public class CarSimulation extends Observable implements Runnable  {
     private int ctr = 0;
     private boolean running = false; // set true if the simulation is running
 
-
     public void startSim() {
         System.out.println("Starting the simulation");
-        if (thread != null) return; // A thread is already running
-
-        thread = new Thread(this); // Create a worker thread
-
+        // A thread is already running
         paused = false;
+        running = true;
         done = false; // reset the done flag.
-        ctr = 0; // reset the loop counter
+        if (thread == null) {
+            ctr = 0; // reset the loop counter
+            thread = new Thread(this); // Create a worker thread
+        };
         thread.start();
-
+        return;
     }
 
     public void pauseSim() {

@@ -2,8 +2,7 @@ import java.util.Random;
 
 public class Car implements Constants {
 
-    Random r = new Random();
-    private int id;
+    private String id;
     private int vehSpeed;
     private int vehLocationX;
     private int vehLocationY;
@@ -12,9 +11,11 @@ public class Car implements Constants {
     private String laneNumber;
     private boolean rotate;
     private int stopDistance;
+    final String alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    final Random r = new Random();
 
     public Car(int vehSpeed, int vehLocationX, int vehLocationY, int vehHeight, int vehWidth, String laneNumber, boolean rotate, int stopDistance){
-        this.id = r.nextInt(1000);
+        this.id =  myUID();
         this.vehSpeed = vehSpeed;
         this.vehLocationX = vehLocationX;
         this.vehLocationY = vehLocationY;
@@ -25,6 +26,14 @@ public class Car implements Constants {
         this.stopDistance =  stopDistance;
     }
 
+    public String myUID() {
+        int i = 4; String uid = "";
+        while (i-- > 0) {
+            uid += alpha.charAt(r.nextInt(26));
+        }
+        return uid;
+    }
+
     /**
      * Vehicle static constructor
      * Creates instances of vehicles
@@ -32,22 +41,20 @@ public class Car implements Constants {
      */
     public static void createVehicleInstancesLane1() {
         Car vehicle = new Car(10, -40, firstLaneY, vehicleHeight,
-                vehicleWidth, "First", false, lane1StopDistance);
+                vehicleWidth, "First", false, laneStopDistance);
         lane1.add(vehicle);
     }
 
     public static void createVehicleInstancesLane2() {
         Car vehicle = new Car(8, -40, secondLaneY, vehicleHeight,
-                vehicleWidth, "Second", false, lane2StopDistance);
+                vehicleWidth, "Second", false, laneStopDistance);
         lane2.add(vehicle);
-
     }
 
     public static void createVehicleInstancesLane3() {
         Car vehicle = new Car(8, -40, thirdLaneY, vehicleHeight,
-                vehicleWidth, "Third", false, lane3StopDistance);
+                vehicleWidth, "Third", false, laneStopDistance);
         lane3.add(vehicle);
-
     }
 
 
@@ -108,7 +115,7 @@ public class Car implements Constants {
         this.rotate = rotate;
     }
 
-    public int getId(){
+    public String getId(){
         return id;
     }
 }
