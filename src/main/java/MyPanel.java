@@ -52,11 +52,14 @@ public class MyPanel extends JPanel implements Constants, Observer {
         g2d.drawLine(0, 150, frameWidth, 150);
         g2d.drawLine(0, 200, frameWidth, 200);
 
-        //road-2 line
-//        g2d.drawLine(0, 550, frameWidth - 100, 550);
-//        //patch line
-//        g2d.drawLine(1300, 150, 1300, 550);
+        int size = g.getFont().getSize();
+        g.setFont(new Font(g.getFont().getFontName(), g.getFont().getStyle(), 36));
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("1", frameWidth - 75, 140);
+        g2d.drawString("2", frameWidth - 75, 190);
+        g2d.drawString("3", frameWidth - 75, 240);
 
+        g.setFont(new Font(g.getFont().getFontName(), g.getFont().getStyle(), size));
         g2d.setColor(Color.GREEN);
         g2d.fillRect(0, 100+roadHeight, frameWidth - 150, 300);
         g2d.fillRect(0, 500+roadHeight, frameWidth, 300);
@@ -92,8 +95,12 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 vehicle.getVehWidth(), vehicle.getVehHeight());
         g2d.setColor(color);
         g2d.fill(rect);
+
+        int size = g2d.getFont().getSize();
+        g2d.setFont(new Font(g2d.getFont().getFontName(), g2d.getFont().getStyle(), 10));
         g2d.setColor(Color.BLACK);
-        g2d.drawString(vehicle.getId(), (int)rect.getX() + 3, (int)rect.getY() + 15);
+        g2d.drawString(vehicle.getId(), (int)rect.getX() + 1, (int)rect.getY() + 15);
+        g2d.setFont(new Font(g2d.getFont().getFontName(), g2d.getFont().getStyle(), size));
     }
 
     @Override
@@ -120,10 +127,12 @@ public class MyPanel extends JPanel implements Constants, Observer {
         g2d.setColor(Color.BLUE);
         Object[] arr = pQueue.toArray();
 
-        for (int i = 0; i < arr.length; i++) {
-            thresh = thresh + 20;
-            System.out.println("Ele: " + arr[i].toString());
-            g2d.drawString(arr[i].toString(), thresh, 500);
+        if(arr.length > 0) {
+            for (int i = 0; i < arr.length; i++) {
+                thresh = thresh + 20;
+                System.out.println("Ele: " + arr[i].toString());
+                g2d.drawString(arr[i].toString(), thresh, 500);
+            }
         }
     }
 
