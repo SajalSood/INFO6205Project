@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,7 +21,7 @@ public class MyPanel extends JPanel implements Constants, Observer {
     private CarSimulation sim = null;
     //private int count = 1;
     private int index;
-
+    private int thresh = 50;
 
     public void paint(Graphics g) {
         g2d = (Graphics2D) g;
@@ -32,7 +33,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
         //road-1
         g2d.fillRect(0, 100, frameWidth, roadHeight);
         //road-2
-
 
 //        g2d.fillRect(0, 500, frameWidth-50, roadHeight);
 //        //road-patch
@@ -57,7 +57,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
 //        //patch line
 //        g2d.drawLine(1300, 150, 1300, 550);
 
-
         g2d.setColor(Color.GREEN);
         g2d.fillRect(0, 100+roadHeight, frameWidth - 150, 300);
         g2d.fillRect(0, 500+roadHeight, frameWidth, 300);
@@ -67,11 +66,16 @@ public class MyPanel extends JPanel implements Constants, Observer {
         g2d.fillRect(1250, 100+roadHeight, roadHeight, 300);
         g2d.fillRect(1100, 510, vehicleWidth, vehicleHeight );
 
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 350, frameWidth, frameHeight);
+
+        g2d.setColor(Color.BLACK);
+        g2d.drawString("Priority Queue", 50, 400);
+
         createVehiclesByVehicleInstances();
     }
 
     private void createVehiclesByVehicleInstances(){
-
         ArrayList<Car> allVehicles = new ArrayList<Car>();
         allVehicles.addAll(lane1);
         allVehicles.addAll(lane2);
@@ -92,7 +96,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
         g2d.drawString(vehicle.getId(), (int)rect.getX() + 3, (int)rect.getY() + 15);
     }
 
-
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof CarSimulation) {
@@ -106,12 +109,25 @@ public class MyPanel extends JPanel implements Constants, Observer {
             if (sim.getCtr() % 10 == 0) {
                 Car.createVehicleInstancesLane3();
             }
+
             updateLocations();
+            updatePriorityQueue();
             repaint();
         }
     }
 
-    private void updateLocations(){
+    private void updatePriorityQueue() {
+        g2d.setColor(Color.BLUE);
+        Object[] arr = pQueue.toArray();
+
+        for (int i = 0; i < arr.length; i++) {
+            thresh = thresh + 20;
+            System.out.println("Ele: " + arr[i].toString());
+            g2d.drawString(arr[i].toString(), thresh, 500);
+        }
+    }
+
+    private void updateLocations() {
         for(int i=0; i < lane1.size(); i++){
             if(i==0) {
                 lane1.get(i).setVehLocationX(lane1.get(i).getVehLocationX() + lane1.get(i).getVehSpeed());
@@ -131,7 +147,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 }
             }
         }
-
         for(int i=0; i < lane2.size(); i++){
             if(i==0) {
                 if((lane2.get(i).getVehLocationX()+vehicleWidth+lane2.get(i).getStopDistance()) < 950) {
@@ -157,7 +172,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 }
             }
         }
-
         for(int i=0; i < lane3.size(); i++){
             if(i==0) {
                 if((lane3.get(i).getVehLocationX()+vehicleWidth+lane3.get(i).getStopDistance()) < 500) {
@@ -206,12 +220,17 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 updateLocations();
                 repaint();
             }
+            else {
+                if(!pQueue.contains(car)){
+                    pQueue.add(car);
+                }
+            }
         }
     }
 
     private boolean carExists(int rearLocX, int frontLocX, ArrayList<Car> to){
-        for(int i =0 ; i < to.size(); i++){
-            if(to.get(i).getVehLocationX()+vehicleWidth > rearLocX && to.get(i).getVehLocationX() < frontLocX) {
+        for(int i = 0 ; i < to.size(); i++){
+            if(to.get(i).getVehLocationX() + vehicleWidth > rearLocX && to.get(i).getVehLocationX() < frontLocX) {
                 return true;
             }
         }
