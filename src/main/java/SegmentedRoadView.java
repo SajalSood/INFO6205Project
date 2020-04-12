@@ -8,7 +8,7 @@ public class SegmentedRoadView implements Constants, ActionListener {
 
     private JFrame frame = null;//Simulation main screen frame.
     private MyPanel panel = null; // My Panel instance;
-    private CarSimulation sim = null; //Vehicle Simulation Instance.
+    private CarSimulation sim = new CarSimulation(); //Vehicle Simulation Instance.
     private boolean paused = false; // to Pause the race simulation
     private JDialog dialogueWindow; // Opens dialogue window when clicked Quit.
     private int vehicleColor; // Used to store the index of the color.
@@ -49,10 +49,20 @@ public class SegmentedRoadView implements Constants, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        sim = new CarSimulation();
-        System.out.println("Start was pressed");
-        sim.addObserver(panel);
-        sim.startSim();
-        sim.setRunning(true); // force this on early, because we're about to reset the buttons
+        if(sim.isPaused()) {
+            btnStart.setText("Pause");
+            sim.startSim();
+        } else if(sim.isRunning()) {
+            sim.pauseSim();
+            sim.setRunning(false);
+            btnStart.setText("Start");
+        }
+        else {
+            System.out.println("Start was pressed");
+            sim.addObserver(panel);
+            sim.startSim();
+            sim.setRunning(true); // force this on early, because we're about to reset the buttons
+            btnStart.setText("Pause");
+        }
     }
 }

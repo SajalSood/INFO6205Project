@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public interface Constants {
 
@@ -43,4 +44,5 @@ public interface Constants {
     ArrayList<Car> lane1 = new ArrayList<Car>();
     ArrayList<Car> lane2 = new ArrayList<Car>();
     ArrayList<Car> lane3 = new ArrayList<Car>();
+    PriorityQueue<Car> pQueue = new PriorityQueue<Car>();
 }
