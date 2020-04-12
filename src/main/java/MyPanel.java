@@ -39,8 +39,8 @@ public class MyPanel extends JPanel implements Constants, Observer {
 //        g2d.fillRect(1250, 200, roadHeight, 300);
 
         g2d.setColor(Color.red);
-        g2d.fillRect(1000, 210, 30, 30);
-        g2d.fillRect(950, 210, 30, 30);
+        g2d.fillRect(550, 210, 30, 30);
+        g2d.fillRect(500, 210, 30, 30);
 
 
         Stroke dashedLane = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
@@ -101,10 +101,10 @@ public class MyPanel extends JPanel implements Constants, Observer {
 //            if (sim.getCtr() % 200 == 0) {
 //                Car.createVehicleInstancesLane1();
 //            }
-            if (sim.getCtr() % 50 == 0) {
+            if (sim.getCtr() % 20 == 0) {
                 Car.createVehicleInstancesLane2();
             }
-            if (sim.getCtr() % 20 == 0) {
+            if (sim.getCtr() % 10 == 0) {
                 Car.createVehicleInstancesLane3();
             }
 
@@ -158,7 +158,7 @@ public class MyPanel extends JPanel implements Constants, Observer {
 
         for(int i=0; i<lane3.size(); i++){
             if(i==0){
-                if((lane3.get(i).getVehLocationX()+vehicleWidth+lane3.get(i).getStopDistance()) < 950) {
+                if((lane3.get(i).getVehLocationX()+vehicleWidth+lane3.get(i).getStopDistance()) < 500) {
                     if(lane3.get(i).getVehSpeed() == 0){
                         lane3.get(i).setVehSpeed(8);
                     }

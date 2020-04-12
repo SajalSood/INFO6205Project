@@ -40,7 +40,6 @@ public interface Constants {
     int lane2StopDistance = 80;
     int lane3StopDistance = 100;
 
-
     ArrayList<Car> lane1 = new ArrayList<Car>();
     ArrayList<Car> lane2 = new ArrayList<Car>();
     ArrayList<Car> lane3 = new ArrayList<Car>();
