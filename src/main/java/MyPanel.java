@@ -132,16 +132,18 @@ public class MyPanel extends JPanel implements Constants, Observer {
 
         if(arr.length > 0) {
             int threshX = 50;
-            int threshY = 500;
+            int threshY = 450;
 
             for (int i = 0; i < arr.length; i++) {
-                if(threshX > 1000){
-                    threshX = 50;
-                    threshY = threshY + 30;
+                if(threshY > 700){
+                    threshX = threshX + 70;
+                    threshY = 450;
+//                    threshY = threshY + 30;
                 }
                 System.out.println("Ele: " + arr[i].toString());
                 g2d.drawString(arr[i].toString(), threshX, threshY);
-                threshX = threshX + 60;
+//                threshX = threshX + 60;
+                threshY = threshY + 30;
             }
         }
     }
