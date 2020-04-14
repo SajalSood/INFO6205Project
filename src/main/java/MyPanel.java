@@ -242,9 +242,32 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 repaint();
             }
             else {
-                if(!pQueue.contains(car)){
-                    pQueue.add(car);
-                }
+                ArrayList<Car> collidingCars = GetCollidingCars(from, rearSafeDistance, frontSafeDistance, null);
+                CheckPriorityQueue(collidingCars);
+            }
+        }
+    }
+
+    private ArrayList<Car> GetCollidingCars(ArrayList<Car> from,
+                                            int rearSafeDistance, int frontSafeDistance, ArrayList<Car> collisionCars ) {
+        if(collisionCars == null) {
+            collisionCars = new ArrayList<Car>();
+        }
+
+        for(int i = 0; i < from.size(); i++) {
+            if (from.get(i).getVehLocationX() + vehicleWidth < rearSafeDistance) {
+                collisionCars.add(from.get(i));
+            }
+        }
+        return collisionCars;
+    }
+
+    private void CheckPriorityQueue(ArrayList<Car> cars) {
+        pQueue.clear();
+        for(int i = 0; i < cars.size(); i++) {
+            Car car = cars.get(i);
+            if(!pQueue.contains(car)){
+                pQueue.add(car);
             }
         }
     }
