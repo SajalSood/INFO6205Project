@@ -1,11 +1,7 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -19,10 +15,8 @@ public class MyPanel extends JPanel implements Constants, Observer {
     private Color color; //store the color of the vehicle.
     private String status = statusMsg; //To show the message on the top panel based on the status number.
     private CarSimulation sim = null;
-    //private int count = 1;
     private int index;
-//    private int thresh = 50;
-
+    private int x=20;
 
     public void paint(Graphics g) {
         g2d = (Graphics2D) g;
@@ -34,10 +28,6 @@ public class MyPanel extends JPanel implements Constants, Observer {
         //road-1
         g2d.fillRect(0, 100, frameWidth, roadHeight);
         //road-2
-
-//        g2d.fillRect(0, 500, frameWidth-50, roadHeight);
-//        //road-patch
-//        g2d.fillRect(1250, 200, roadHeight, 300);
 
         g2d.setColor(Color.red);
         g2d.fillRect(550, 210, 30, 30);
@@ -78,10 +68,10 @@ public class MyPanel extends JPanel implements Constants, Observer {
 
         createVehiclesByVehicleInstances();
 
-        updatePriorityQueue();
+        displayPriorityQueue();
 
     }
-
+  // adding all vehicles (lane 1+2+3)
     private void createVehiclesByVehicleInstances(){
         ArrayList<Car> allVehicles = new ArrayList<Car>();
         allVehicles.addAll(lane1);
@@ -106,12 +96,15 @@ public class MyPanel extends JPanel implements Constants, Observer {
         g2d.drawString(vehicle.getId(), (int)rect.getX() + 1, (int)rect.getY() + 15);
         g2d.setFont(new Font(g2d.getFont().getFontName(), g2d.getFont().getStyle(), size));
     }
-
+// Timing of the vehicles
     @Override
     public void update(Observable observable, Object o) {
         if (o instanceof CarSimulation) {
+            x=x+20;
+            if(x>60)
+                x=20;
             sim = (CarSimulation) o;
-            if (sim.getCtr() % 50 == 0) {
+            if (sim.getCtr() % x == 0) {
                 Car.createVehicleInstancesLane1();
             }
             if (sim.getCtr() % 30 == 0) {
@@ -125,8 +118,8 @@ public class MyPanel extends JPanel implements Constants, Observer {
             repaint();
         }
     }
-
-    private void updatePriorityQueue() {
+// Displaying PQ in Vertical
+    private void displayPriorityQueue() {
         g2d.setColor(Color.BLUE);
         Object[] arr = pQueue.toArray();
 
@@ -148,24 +141,33 @@ public class MyPanel extends JPanel implements Constants, Observer {
         }
     }
 
+// Ckeking safe distance
+    private void checkSafeDistance(Car currCar, Car preCar){
+        if(currCar.getVehLocationX()+vehicleWidth < (preCar.getVehLocationX() - currCar.getStopDistance())) {
+            if(currCar.getVehSpeed() == 0){
+                currCar.setVehSpeed(8);
+            }
+            currCar.setVehLocationX(currCar.getVehLocationX() + currCar.getVehSpeed());
+        }
+        else {
+            currCar.setVehSpeed(0);
+        }
+    }
+// updating vehicle locations
     private void updateLocations() {
+
+
         for(int i=0; i < lane1.size(); i++){
             if(i==0) {
                 lane1.get(i).setVehLocationX(lane1.get(i).getVehLocationX() + lane1.get(i).getVehSpeed());
                 if(lane1.get(i).getVehLocationX() > frameWidth){
+                    pQueue.remove(lane1.get(i));
                     lane1.remove(lane1.get(i));
                 }
             }
             else {
-                if(lane1.get(i).getVehLocationX()+vehicleWidth < (lane1.get(i-1).getVehLocationX() - lane1.get(i).getStopDistance())) {
-                    if(lane1.get(i).getVehSpeed() == 0){
-                        lane1.get(i).setVehSpeed(8);
-                    }
-                    lane1.get(i).setVehLocationX(lane1.get(i).getVehLocationX() + lane1.get(i).getVehSpeed());
-                }
-                else{
-                    lane1.get(i).setVehSpeed(0);
-                }
+
+                checkSafeDistance(lane1.get(i), lane1.get(i-1));
             }
         }
         for(int i=0; i < lane2.size(); i++){
@@ -182,15 +184,8 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 }
             }
             else {
-                if(lane2.get(i).getVehLocationX()+vehicleWidth < (lane2.get(i-1).getVehLocationX() - lane2.get(i).getStopDistance())) {
-                    if(lane2.get(i).getVehSpeed() == 0){
-                        lane2.get(i).setVehSpeed(8);
-                    }
-                    lane2.get(i).setVehLocationX(lane2.get(i).getVehLocationX() + lane2.get(i).getVehSpeed());
-                }
-                else{
-                    lane2.get(i).setVehSpeed(0);
-                }
+
+                checkSafeDistance(lane2.get(i), lane2.get(i-1));
             }
         }
         for(int i=0; i < lane3.size(); i++){
@@ -207,19 +202,12 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 }
             }
             else {
-                if(lane3.get(i).getVehLocationX()+vehicleWidth < (lane3.get(i-1).getVehLocationX() - lane3.get(i).getStopDistance())) {
-                    if(lane3.get(i).getVehSpeed() == 0){
-                        lane3.get(i).setVehSpeed(8);
-                    }
-                    lane3.get(i).setVehLocationX(lane3.get(i).getVehLocationX() + lane3.get(i).getVehSpeed());
-                }
-                else{
-                    lane3.get(i).setVehSpeed(0);
-                }
+
+                checkSafeDistance(lane3.get(i), lane3.get(i-1));
             }
         }
     }
-
+// checking for merging 
     private void checkIfCarCanMerge(Car car,  ArrayList<Car> from,  ArrayList<Car> to){
         for(int i=0; i< to.size(); i++) {
             int rearSafeDistance = car.getVehLocationX() - 20;
