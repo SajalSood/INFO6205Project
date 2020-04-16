@@ -141,7 +141,7 @@ public class MyPanel extends JPanel implements Constants, Observer {
         }
     }
 
-// Cheking safe distance
+// Ckeking safe distance
     private void checkSafeDistance(Car currCar, Car preCar){
         if(currCar.getVehLocationX()+vehicleWidth < (preCar.getVehLocationX() - currCar.getStopDistance())) {
             if(currCar.getVehSpeed() == 0){
@@ -156,26 +156,20 @@ public class MyPanel extends JPanel implements Constants, Observer {
 // updating vehicle locations
     private void updateLocations() {
 
-        for(int i=0; i < lane3.size(); i++){
+
+        for(int i=0; i < lane1.size(); i++){
             if(i==0) {
-                if((lane3.get(i).getVehLocationX()+vehicleWidth+lane3.get(i).getStopDistance()) < 500) {
-                    if(lane3.get(i).getVehSpeed() == 0){
-                        lane3.get(i).setVehSpeed(8);
-                    }
-                    lane3.get(i).setVehLocationX(lane3.get(i).getVehLocationX() + lane3.get(i).getVehSpeed());
-                }
-                else{
-                    lane3.get(i).setVehSpeed(0);
-                    checkIfCarCanMerge(lane3.get(i), lane3, lane2);
+                lane1.get(i).setVehLocationX(lane1.get(i).getVehLocationX() + lane1.get(i).getVehSpeed());
+                if(lane1.get(i).getVehLocationX() > frameWidth){
+                    pQueue.remove(lane1.get(i));
+                    lane1.remove(lane1.get(i));
                 }
             }
             else {
 
-                checkSafeDistance(lane3.get(i), lane3.get(i-1));
+                checkSafeDistance(lane1.get(i), lane1.get(i-1));
             }
         }
-
-
         for(int i=0; i < lane2.size(); i++){
             if(i==0) {
                 if((lane2.get(i).getVehLocationX()+vehicleWidth+lane2.get(i).getStopDistance()) < 950) {
@@ -194,25 +188,26 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 checkSafeDistance(lane2.get(i), lane2.get(i-1));
             }
         }
-
-        for(int i=0; i < lane1.size(); i++){
-
+        for(int i=0; i < lane3.size(); i++){
             if(i==0) {
-                lane1.get(i).setVehLocationX(lane1.get(i).getVehLocationX() + lane1.get(i).getVehSpeed());
-                if(lane1.get(i).getVehLocationX() > frameWidth){
-                   // pQueue.remove(lane1.get(i));
-                    lane1.remove(lane1.get(i));
+                if((lane3.get(i).getVehLocationX()+vehicleWidth+lane3.get(i).getStopDistance()) < 500) {
+                    if(lane3.get(i).getVehSpeed() == 0){
+                        lane3.get(i).setVehSpeed(8);
+                    }
+                    lane3.get(i).setVehLocationX(lane3.get(i).getVehLocationX() + lane3.get(i).getVehSpeed());
+                }
+                else{
+                    lane3.get(i).setVehSpeed(0);
+                    checkIfCarCanMerge(lane3.get(i), lane3, lane2);
                 }
             }
             else {
 
-                checkSafeDistance(lane1.get(i), lane1.get(i-1));
+                checkSafeDistance(lane3.get(i), lane3.get(i-1));
             }
-            if(lane1.get(i).getLaneNumber()=="First")
-                pQueue.remove(lane1.get(i));
         }
     }
-// checking for merging
+// checking for merging 
     private void checkIfCarCanMerge(Car car,  ArrayList<Car> from,  ArrayList<Car> to){
         for(int i=0; i< to.size(); i++) {
             int rearSafeDistance = car.getVehLocationX() - 20;
@@ -235,9 +230,32 @@ public class MyPanel extends JPanel implements Constants, Observer {
                 repaint();
             }
             else {
-                if(!pQueue.contains(car)){
-                    pQueue.add(car);
-                }
+                ArrayList<Car> collidingCars = GetCollidingCars(from, rearSafeDistance, frontSafeDistance, null);
+                CheckPriorityQueue(collidingCars);
+            }
+        }
+    }
+
+    private ArrayList<Car> GetCollidingCars(ArrayList<Car> from,
+                                            int rearSafeDistance, int frontSafeDistance, ArrayList<Car> collisionCars ) {
+        if(collisionCars == null) {
+            collisionCars = new ArrayList<Car>();
+        }
+
+        for(int i = 0; i < from.size(); i++) {
+            if (from.get(i).getVehLocationX() + vehicleWidth < rearSafeDistance) {
+                collisionCars.add(from.get(i));
+            }
+        }
+        return collisionCars;
+    }
+
+    private void CheckPriorityQueue(ArrayList<Car> cars) {
+        pQueue.clear();
+        for(int i = 0; i < cars.size(); i++) {
+            Car car = cars.get(i);
+            if(!pQueue.contains(car)){
+                pQueue.add(car);
             }
         }
     }
@@ -280,7 +298,4 @@ public class MyPanel extends JPanel implements Constants, Observer {
         }
         return list.get(max);
     }
-     private boolean previousCollision(Car currCar, Car preCar){
-         return false;
-     }
 }
