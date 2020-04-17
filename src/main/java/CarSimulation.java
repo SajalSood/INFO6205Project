@@ -1,6 +1,7 @@
 import java.util.Observable;
 
-public class CarSimulation extends Observable implements Runnable  {
+@SuppressWarnings("deprecation")
+public class CarSimulation extends Observable implements Runnable {
 
     private Thread thread = null; // the thread that runs my simulation
     private boolean paused = false;
@@ -10,14 +11,13 @@ public class CarSimulation extends Observable implements Runnable  {
 
     public void startSim() {
         System.out.println("Starting the simulation");
-        // A thread is already running
         paused = false;
         running = true;
         done = false; // reset the done flag.
         if (thread == null) {
             ctr = 0; // reset the loop counter
             thread = new Thread(this); // Create a worker thread
-        };
+        }
         thread.start();
     }
 
@@ -30,11 +30,6 @@ public class CarSimulation extends Observable implements Runnable  {
         return paused;
     }
 
-    public boolean isPausable() {
-        if (!running) return false;
-        if (done) return false;
-        return true;
-    }
 
     public boolean isRunning() {
         return running;
@@ -44,11 +39,6 @@ public class CarSimulation extends Observable implements Runnable  {
         this.running = running;
     }
 
-    public void stopSim() {
-        System.out.println("Stop the simulation");
-        if (thread == null) return; // defensive coding in case the thread is null
-        done = true;
-    }
 
     @Override
     public void run() {
@@ -58,21 +48,21 @@ public class CarSimulation extends Observable implements Runnable  {
 
     private void runSimLoop() {
         running = true;
-        while(!done) {
-            // do some simulation work
+        while (!done) {
             if (!paused)
                 updateSim();
-            sleep(50L);
+            sleep();
 
         }
         running = false;
     }
+
     /*
      * Make the current thread sleep a little
      */
-    private void sleep(long millis) {
+    private void sleep() {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

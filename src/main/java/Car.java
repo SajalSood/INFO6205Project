@@ -14,8 +14,10 @@ public class Car implements Constants {
     private int stopDistance;
     final String alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final Random r = new Random();
+    private int priority;
 
-    public Car(int vehSpeed, int vehLocationX, int vehLocationY, int vehHeight, int vehWidth, String laneNumber, boolean rotate, int stopDistance){
+    public Car(int vehSpeed, int vehLocationX, int vehLocationY, int vehHeight, int vehWidth, String laneNumber,
+               boolean rotate, int stopDistance, int priority){
         this.id =  myUID(laneNumber);
         this.vehSpeed = vehSpeed;
         this.vehLocationX = vehLocationX;
@@ -25,6 +27,7 @@ public class Car implements Constants {
         this.laneNumber = laneNumber;
         this.rotate = rotate;
         this.stopDistance =  stopDistance;
+        this.priority = priority;
     }
 
     public String myUID(String laneNumber) {
@@ -52,19 +55,19 @@ public class Car implements Constants {
      */
     public static void createVehicleInstancesLane1() {
         Car vehicle = new Car(10, -40, firstLaneY, vehicleHeight,
-                vehicleWidth, "First", false, laneStopDistance);
+                vehicleWidth, "First", false, laneStopDistance, 0);
         lane1.add(vehicle);
     }
 
     public static void createVehicleInstancesLane2() {
         Car vehicle = new Car(8, -40, secondLaneY, vehicleHeight,
-                vehicleWidth, "Second", false, laneStopDistance);
+                vehicleWidth, "Second", false, laneStopDistance, 0);
         lane2.add(vehicle);
     }
 
     public static void createVehicleInstancesLane3() {
         Car vehicle = new Car(8, -40, thirdLaneY, vehicleHeight,
-                vehicleWidth, "Third", false, laneStopDistance);
+                vehicleWidth, "Third", false, laneStopDistance, 0);
         lane3.add(vehicle);
     }
 
@@ -118,17 +121,18 @@ public class Car implements Constants {
         this.laneNumber = laneNumber;
     }
 
-    public boolean isRotate() {
-        return rotate;
-    }
-
-    public void setRotate(boolean rotate) {
-        this.rotate = rotate;
-    }
-
     public String getId(){
         return id;
     }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
 
     @Override
     public String toString() {

@@ -6,12 +6,8 @@ import java.awt.event.ActionListener;
 
 public class SegmentedRoadView implements Constants, ActionListener {
 
-    private JFrame frame = null;//Simulation main screen frame.
     private MyPanel panel = null; // My Panel instance;
     private CarSimulation sim = new CarSimulation(); //Vehicle Simulation Instance.
-    private boolean paused = false; // to Pause the race simulation
-    private JDialog dialogueWindow; // Opens dialogue window when clicked Quit.
-    private int vehicleColor; // Used to store the index of the color.
     private JButton btnStart;
 
     public SegmentedRoadView() {
@@ -20,7 +16,8 @@ public class SegmentedRoadView implements Constants, ActionListener {
 
     //Method to initialise the main frame of the simulation
     private void initVehicleGUi() {
-        frame = new JFrame();
+        //Simulation main screen frame.
+        JFrame frame = new JFrame();
         frame.setTitle(AppName);
         frame.setResizable(false);
         frame.setSize(frameWidth, frameHeight);
@@ -34,7 +31,7 @@ public class SegmentedRoadView implements Constants, ActionListener {
         frame.setVisible(true);
     }
 
-    private JPanel getNorthPanel(){
+    private JPanel getNorthPanel() {
         btnStart = new JButton("Start");
         btnStart.setActionCommand("Start");
         btnStart.addActionListener(this);
@@ -44,20 +41,19 @@ public class SegmentedRoadView implements Constants, ActionListener {
     }
 
     public static void main(String[] args) {
-        SegmentedRoadView myApp = new SegmentedRoadView();
+         new SegmentedRoadView();
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        if(sim.isPaused()) {
+        if (sim.isPaused()) {
             btnStart.setText("Pause");
             sim.startSim();
-        } else if(sim.isRunning()) {
+        } else if (sim.isRunning()) {
             sim.pauseSim();
             sim.setRunning(false);
             btnStart.setText("Start");
-        }
-        else {
+        } else {
             System.out.println("Start was pressed");
             sim.addObserver(panel);
             sim.startSim();
