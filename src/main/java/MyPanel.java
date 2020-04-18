@@ -67,7 +67,7 @@ public class MyPanel extends JPanel implements Constants, Observer {
             if (x > 60)
                 x = 20;
             CarSimulation sim = (CarSimulation) o;
-            if (sim.getCtr() % x == 0) {
+            if (sim.getCtr() % 50 == 0) {
                 Car.createVehicleInstancesLane1();
             }
             if (sim.getCtr() % 30 == 0) {
@@ -220,11 +220,8 @@ public class MyPanel extends JPanel implements Constants, Observer {
     }
 
     //Method to get all colliding cars
-    private ArrayList<Car> GetCollidingCars(ArrayList<Car> from,
-                                            int rearSafeDistance) {
-
+    private ArrayList<Car> GetCollidingCars(ArrayList<Car> from,int rearSafeDistance) {
         ArrayList<Car> collisionCars = new ArrayList<Car>();
-
         for (Car car : from) {
             if (car.getVehLocationX() + vehicleWidth < rearSafeDistance) {
                 collisionCars.add(car);
