@@ -29,5 +29,9 @@ git clone https://github.com/SajalSood/INFO6205Project.git
 4. Press Pause to pause the simulation
 5. Press Start/Pause to alternate
 
+## Reference
+
+Link to the old repository - https://github.com/SajalSood/TrafficSimulation
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
